@@ -3,7 +3,7 @@ package ru.hydrologist.jaas;
 import ru.hydrologist.dao.PostgreDAO;
 import ru.hydrologist.exceptions.DataNotFoundException;
 import ru.hydrologist.exceptions.UserNotFoundException;
-import ru.hydrologist.security.CustomHash;
+import ru.hydrologist.security.CustomHash; 
 import ru.hydrologist.users.User;
 
 import javax.security.auth.Subject;
