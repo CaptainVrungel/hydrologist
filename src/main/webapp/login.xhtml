@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>#{messages.welcome_title}</title>
+    <h:outputStylesheet name="/css/loginStyles.css"/>
+    <h:outputScript library="js" name="lib.js" target="head"/>
+
+</h:head>
+<h:body bgcolor="white">
+
+    <noscript>
+        <h4>Включите Javscript в браузере для полноценной работы системы</h4>
+    </noscript>
+
+    <div id="login-form">
+        <h1>#{messages.authorization}</h1>
+
+        <fieldset>
+            <h:form action="" method="get" id="login_form">
+
+                <h:outputLabel value='#{messages.input_login}:'/>
+                <h:inputText id="email" value="#{user.email}" type="email" required="true" >
+                    <f:validator validatorId="ru.hydrologist.validators.LoginValidator"/>
+                </h:inputText>
+
+                <h:outputLabel value='#{messages.input_password}:'/>
+                <h:inputSecret id="inputPassword" value="#{user.password}" type="password" >
+                   <f:validator validatorId="ru.hydrologist.validators.PasswordValidator"/>
+                </h:inputSecret>
+
+                <h:commandButton action="#{user.login()}" value="#{messages.input_enter}">
+                    <f:ajax event="mousedown" onevent="showProgress"/>
+                </h:commandButton>
+
+                <div class="clearfix">
+                    <p></p>
+                    <div>
+                        <span class="info">+</span><h:link value="#{messages.registration}" outcome="registration" />
+                    </div>
+                    <div>
+                        <span class="info">?</span><h:link value="Восстановить пароль" outcome="passwordRestore" />
+                    </div>
+                    <p></p>
+                    <div>
+                        <h:link value="Вернуться на главную страницу" outcome="index" />
+                    </div>
+
+                </div>
+
+                <div class = "error">
+                    <h:message for="email" styleClass="error"/>
+                    <h:message for="inputPassword" styleClass="error"/>
+                    <h:message for="login_form" id="loginError" styleClass="error"/>
+                </div>
+
+                <div id="loading_wrapper">
+                    <h:graphicImage library="img" name="preloader.gif" width="80"/>
+                </div>
+
+            </h:form>
+        </fieldset>
+
+    </div>
+
+</h:body>
+</html>

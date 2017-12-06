@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Title</title>
+</h:head>
+
+<h:body>
+    <ui:composition template="../templates/main_template.xhtml">
+
+        <ui:define name="left_menu">
+        </ui:define>
+
+        <ui:define name="content">
+
+            <h2>Нормативная документация</h2>
+            <br/>
+            <div id="documentsList">
+                <table class="documentTable">
+
+                    <tr>
+                        <th>Документ</th>
+                        <th>Наименование документа</th>
+                        <th>Размер</th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLink value="/files/Standarts/SNIP-2.01.14-83.pdf" target="_blank">СНиП 2.01.14-83</h:outputLink>
+                        </td>
+                        <td>Определение расчётных гидрологических характеристик</td>
+                        <td>1.8 мб</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLink value="/files/Standarts/SNIP-3.06.04.91.pdf" target="_blank">СНиП 3.06.04.91</h:outputLink>
+                        </td>
+                        <td>Мосты и трубы</td>
+                        <td>10.6 мб</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLink value="/files/Standarts/SP-11.103.97.pdf" target="_blank">СП 11-103-97</h:outputLink>
+                        </td>
+                        <td>Инженерно-гидрометеорологические изыскания для строительства</td>
+                        <td>0.5 мб</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLink value="/files/Standarts/SP-33.101.2003.pdf" target="_blank">СП 33-101-2003</h:outputLink>
+                        </td>
+                        <td>Определение основных расчётных гидрологических характеристик</td>
+                        <td>11.1 мб</td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <h:outputLink value="/files/Standarts/GOST-19179-73.pdf" target="_blank">ГОСТ 19179-73</h:outputLink>
+                        </td>
+                        <td>Гидрология суши. Термины и опредения</td>
+                        <td>2.5 мб</td>
+                    </tr>
+
+                </table>
+                <hr/>
+            </div>
+        </ui:define>
+
+    </ui:composition>
+</h:body>
+
+</html>

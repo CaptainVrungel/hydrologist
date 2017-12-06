@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Title</title>
+</h:head>
+<h:body>
+    <ui:composition>
+
+        <div class="locales" id="locales">
+            <h:form>
+                <p>
+                    <!--
+                    <h:commandLink>
+                       <h:graphicImage library="img" name="eng.png" title="#{messages.english}" width="20"/>
+                       <f:ajax event="click" listener="#{localeChanger.changeLocale('en')}" render=":header"/>
+                    </h:commandLink>
+
+                    <h:commandLink action="#{localeChanger.changeLocale('ru_RU')}">
+                        <h:graphicImage library="img" name="rus.png" title="#{messages.russian}" width="20"/>
+                    </h:commandLink>
+                    -->
+                </p>
+            </h:form>
+        </div>
+
+    </ui:composition>
+</h:body>
+
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="#{localeChanger.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<f:view locale="#{localeChanger.locale}">
+    <h:head>
+        <title>Title</title>
+        <h:outputStylesheet library="css" name="styles.css"/>
+    </h:head>
+
+    <h:body>
+        <div id="container"  class="container">
+
+            <div class = "header" id="header">
+                <ui:insert name = "header">
+                    <ui:include src="/templates/header.xhtml"/>
+                </ui:insert>
+            </div>
+
+            <div class = "middle" id="middle">
+
+                <div class="left_menu" id="left_menu">
+                    <ui:insert name = "left_menu">
+                        <ui:include src="left_menu.xhtml"/>
+                    </ui:insert>
+                </div>
+
+                <div class="content" id="content">
+                    <ui:insert name = "content">
+                        <ui:include src="content.xhtml"/>
+                    </ui:insert>
+                </div>
+
+                <div class="right_menu" id="right_menu">
+                    <ui:insert name = "left_menu">
+                        <ui:include src="right_menu.xhtml"/>
+                    </ui:insert>
+                </div>
+
+            </div>
+
+            <div class = "footer" id="footer">
+                <ui:insert name = "footer">
+                    <ui:include src="footer.xhtml"/>
+                </ui:insert>
+            </div>
+
+
+        </div>
+    </h:body>
+</f:view>
+</html>

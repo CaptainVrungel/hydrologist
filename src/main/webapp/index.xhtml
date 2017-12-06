@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <title>Title</title>
+    <h:outputStylesheet library="css" name="styles.css"/>
+</h:head>
+
+<h:body>
+
+    <ui:composition template="templates/main_template.xhtml">
+
+        <ui:define name="left_menu">
+        </ui:define>
+
+        <ui:define name="content">
+
+            <br/>
+
+            <h2> #{messages.about} </h2>
+            <p>
+                Hydrologist - это комплексное решение, автоматизирующее механизмы выполнения гидрологических расчётов
+                в соответствии с различными нормативными документами. На данный момент, система
+                предоставляет следующие возможности:
+            </p>
+
+            <h:dataTable id="AboutItems" value="#{calculationList.calculationList}" var="calculations">
+                <ul>
+                    <h:column>
+                        <f:facet name="header"></f:facet>
+                        <li>#{calculations.calculationMethodName}</li>
+                    </h:column>
+                </ul>
+            </h:dataTable>
+
+            <br/>
+            <p>
+                На текущий момент система работает в тестовом режиме. Количество доступных расчётов не велико,
+                однако, их число с течением времени будет расти.
+            </p>
+
+            <br/>
+
+            <h2>Доступ к системе</h2>
+            <p>
+                Доступ к системе предоставляется всем заинтересованным, после прохождения процедуры регистрации.
+                Для того, чтобы зарегистрироваться в системе необходимо заполнить соответствующую форму.
+                От Вас потребуется действующий электронный ящик, на который будет направлен индивидуальный
+                пароль от системы. Для того, чтобы приступить к процедуре регистрации, перейдите в раздел
+                «Расчёты», на появившейся странице авторизации выберете пункт «Регистрация».
+            </p>
+
+            <br/>
+
+            <h2>Техническая поддержка</h2>
+            <p>
+                По всем вопросам, возникающим при работе с системой, Вы можете обращаться на единый адрес
+                технической поддержки - #{messages.support_email_address}.
+            </p>
+            <br/>
+            <p>
+                Команда проекта будет признательна, если Вы примете участие в развитии системы и поделитесь
+                своими впечатлениями от работы с ней, а также предложениями по её развитию и улучшению.
+                Любая обратная связь будет очень полезна. Свои комментарии и предложения просим также
+                отправлять на единый адрес системы -  #{messages.support_email_address}.
+            </p>
+            <br/>
+            <p>
+                    Заранее спасибо!
+            </p>
+
+
+
+
+
+        </ui:define>
+
+    </ui:composition>
+    
+</h:body>
+
+</html>

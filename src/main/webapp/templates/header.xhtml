@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+<h:head>
+    <title>Title</title>
+</h:head>
+
+<h:body>
+
+    <ui:composition>
+        <div class = "top_menu" id="top_menu">
+
+            <div class="logo">
+                <h:link outcome="/index" >
+                    <h:graphicImage library="img" name="hydrologist3_logo_on_transparent.png" height="30" />
+                </h:link>
+            </div>
+
+            <div class="description">
+                <h:form>
+                    <h:commandLink value = "#{messages.about}" action="#{menuController.about}"/>
+                </h:form>
+            </div>
+
+            <div class="calculations">
+                <h:form>
+                    <h:commandLink value="#{messages.calculations}" action="#{menuController.calculations}"/>
+                </h:form>
+            </div>
+
+            <div class="contacts">
+                <h:form>
+                    <h:commandLink value="#{messages.documents}" action="#{menuController.documents}"/>
+                </h:form>
+            </div>
+
+            <div class="exit" id="exit">
+                <ui:insert name="exit">
+                    <div id="username">
+                        #{user.email}
+                    </div>
+                    <div id="exitButton">
+                        <h:form>
+                            <h:commandLink action="#{user.loginLogout}" value="#{user.loginLogoutButonName}"/>
+                        </h:form>
+                    </div>
+                </ui:insert>
+            </div>
+
+            <div class="locales" id="locales">
+                <ui:insert name = "locales">
+                    <ui:include src="locales.xhtml"/>
+                </ui:insert>
+            </div>
+        </div>
+    </ui:composition>
+
+</h:body>
+
+</html>

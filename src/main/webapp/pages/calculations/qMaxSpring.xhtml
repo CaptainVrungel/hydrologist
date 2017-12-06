@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>QmaxSpring</title>
+</h:head>
+
+<h:body>
+
+    <ui:composition template="/templates/main_template.xhtml">
+
+        <ui:define name="content">
+
+            <h2> Расчёт максимальных расходов воды весеннего половодья </h2>
+            <h3> СП 33-101-2003 </h3>
+
+            <h:form id="tableForm">
+
+                <h:panelGroup id="initialData" layout="block" rendered="#{formBean.showBlock == '1'}">
+
+                    <table>
+
+                        <tr>
+
+                            <td class = "tableDataSectionHeader"> Информация об объекте наблюдений </td>
+                            <td>
+                                <hr/>
+                                <table>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Тип объекта: "/> </td>
+                                        <td>
+                                            <h:selectOneMenu value="#{formBean.objectType}">
+                                                <f:selectItem itemValue = "река" itemLabel = "Река" />
+                                                <f:selectItem itemValue = "ручей" itemLabel = "Ручей" />
+                                                <f:selectItem itemValue = "озеро" itemLabel = "Озеро" />
+                                                <f:selectItem itemValue = "водохранилище" itemLabel = "Водохранилище" />
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Название объекта: "/> </td>
+                                        <td> <h:inputText value="#{formBean.objectName}"/> </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Название водомерного поста: "/> </td>
+                                        <td> <h:inputText value="#{formBean.observationPostName}"/> </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Код водомерного поста: "/> </td>
+                                        <td> <h:inputText value="#{formBean.observationPostCode}"/> </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Дополнительная информация: "/> </td>
+                                        <td> <h:inputTextarea value="#{formBean.additionalInformation}"/> </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class = "tableDataSectionHeader">Параметры аналитической кривой</td>
+                            <td>
+                                <hr/>
+                                <table>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Проектная вероятность: "/> </td>
+                                        <td> <h:inputText value="#{formBean.projectProbability}"/> </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <h:outputLabel value="Тип аналитического распределения: "/> </td>
+                                        <td>
+                                            <h:selectOneMenu value="#{formBean.selectedDistribution}">
+                                                <f:selectItems value="#{formBean.distributionTypes}" var="distribution" itemValue="#{distribution}" itemLabel="#{distribution.distributionName}"/>
+                                            </h:selectOneMenu>
+                                        </td>
+                                    </tr>
+
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class = "tableDataSectionHeader">Ряд наблюдений</td>
+                            <td>
+                                <hr/>
+                                <h:dataTable class="dataTable" id="initialDataTable" value="#{formBean.empiricObservations}" var="observation" headerClass="order-table-header">
+<!--
+                                    <h:column>
+                                        <f:facet name="header"> Год </f:facet>
+                                        <h:inputText id="year" value="#{observation.year}" class = 'yearDataInput'>
+                                            <f:validator validatorId="ru.PositiveIntegerValidator"/>
+                                        </h:inputText>
+                                        <h:message for="year" styleClass="error"/>
+                                    </h:column>
+-->
+                                    <h:column>
+                                        <f:facet name="header"> Расход воды Q,м<sup>3</sup>/с </f:facet>
+                                        <h:inputText id="initialInputField" value="#{observation.value}" class = 'rangeDataInput'>
+                                            <f:ajax execute=":tableForm" listener="#{formBean.distributeData}" event="blur" render=":tableForm"/>
+                                            <f:validator validatorId="ru.hydrologist.validators.CalculationValueValidator"/>
+                                        </h:inputText>
+                                        <h:message for="initialInputField" styleClass="error"/>
+                                    </h:column>
+
+                                </h:dataTable>
+                                <hr/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <h:commandButton id="calculate_button" class="actionButton" value="Рассчитать параметры ряда" >
+                        <f:ajax listener="#{formBean.fireCalculation}" action="click" execute=":tableForm" render=":tableForm"/>
+                        <f:ajax listener="#{formBean.setShowBlock('2')}" action="click" execute=":tableForm" render=":tableForm"/>
+                    </h:commandButton>
+
+                </h:panelGroup>
+
+                <h:panelGroup id="resultData" layout="block" rendered="#{formBean.showBlock == '2'}">
+
+                <table>
+                    <tr>
+                        <td class = "tableDataSectionHeader">Объект</td>
+                        <td> #{formBean.objectType} #{formBean.objectName} - #{formBean.observationPostName}, #{formBean.additionalInformation}</td>
+                    </tr>
+                    <tr>
+                        <td class = "tableDataSectionHeader">Эмпирический ряд наблюдений</td>
+                        <td>
+                            <hr/>
+                            <h:dataTable class="dataTable" value="#{formBean.observations}" var="observation" headerClass="order-table-header">
+
+                                <h:column>
+                                    <f:facet name="header">Ранжированный ряд</f:facet>
+                                    #{observation.value}
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">Вероятности</f:facet>
+                                    #{observation.probability}
+                                </h:column>
+
+                            </h:dataTable>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class = "tableDataSectionHeader">Cтатистические характеристики ряда наблюдений</td>
+                        <td>
+                            <hr/>
+                            <table class="dataTable">
+                                <tr>
+                                    <th>Среднее значение</th>
+                                    <th>Коэффициент автокорреляции (r)</th>
+                                    <th>Коэффициент вариации (Cv)</th>
+                                    <th>Коэффициент ассиметрии (Cs)</th>
+                                    <th>Отношение Cs/Cv</th>
+                                </tr>
+                                <tr>
+                                    <td>#{formBean.rangeAverage}</td>
+                                    <td>#{formBean.r}</td>
+                                    <td>#{formBean.cv}</td>
+                                    <td>#{formBean.cs}</td>
+                                    <td>#{formBean.cscv}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class = "tableDataSectionHeader">Ординаты аналитической кривой</td>
+                        <td>
+                            <hr/>
+                            <h:dataTable class="dataTable" value="#{formBean.analystRangeValues}" var="analystValue" headerClass="order-table-header">
+
+                                <h:column>
+                                    <f:facet name="header">Вероятности аналитические</f:facet>
+                                    #{analystValue.probability}
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">Аналитическое распределение</f:facet>
+                                    #{analystValue.value}
+                                </h:column>
+
+                            </h:dataTable>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class = "tableDataSectionHeader">  Расчётные значения проектных расходов воды </td>
+                        <td>
+                            <hr/>
+                            <table class="dataTable">
+
+                                <tr>
+                                    <th>Вероятность</th>
+                                    <th>Величина расхода воды</th>
+                                </tr>
+                                <tr>
+                                    <td>#{formBean.projectProbability}</td>
+                                    <td>#{formBean.projectValueForProbability}</td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="tableDataSectionHeader">Кривая обеспеченности</td>
+                        <td>
+                            <hr/>
+                            <h:panelGroup id="HasenGraph" class="HasenGraph" layout="block" rendered="#{formBean.showSubBlock == '1'}">
+                                <h:outputLink value="#{formBean.curveLink}" target="_new"> Скачать </h:outputLink>
+                            </h:panelGroup>
+
+                            <h:commandLink id="showGraphParamsButton" value="Построить новый график кривой обеспеченности" >
+                                <f:ajax listener="#{formBean.setShowBlock('3')}" action="click" execute=":tableForm" render=":tableForm"/>
+                            </h:commandLink>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                </table>
+
+                    <h:commandButton id="showInputParamsParamsButton" value="Изменить исходные данные" >
+                        <f:ajax listener="#{formBean.setShowBlock('1')}" action="click" execute=":tableForm" render=":tableForm"/>
+                    </h:commandButton>
+
+                </h:panelGroup>
+
+                <h:panelGroup id="HasenGraphParams" layout="block" rendered="#{formBean.showBlock == '3'}">
+                <table class = "HasenGraphParamsTable">
+                    <tr>
+                        <td class="tableDataSectionHeader">Параметры графика</td>
+                        <td>
+                            <hr/>
+                            <table>
+                                   <tr>
+                                    <td><h:outputLabel value="Цвет точек эмпирической кривой: "/></td>
+                                    <td>
+                                        <h:selectOneMenu value="#{formBean.empiricColor}">
+                                            <f:selectItems value="#{formBean.colors.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.key}"/>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h:selectBooleanCheckbox value="#{formBean.drawInscription}"/>
+                                        <h:outputLabel value="Подписывать значения "/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h:selectBooleanCheckbox value="#{formBean.fillPoints}"/>
+                                        <h:outputLabel value="Заливка точек "/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <h:selectBooleanCheckbox value="#{formBean.showAnalystCurve}" binding="#{checkbox}">
+                                            <f:ajax render="AnalystCurveColor" />
+                                        </h:selectBooleanCheckbox>
+                                        <h:outputLabel value="Отобразить аналитическую кривую "/>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td><h:outputLabel value="Цвет точек аналитической кривой: "/></td>
+                                    <td>
+                                        <h:selectOneMenu value="#{formBean.analystColor}" disabled="#{not checkbox.value}" id="AnalystCurveColor">
+                                            <f:selectItems value="#{formBean.colors.entrySet()}" var="entry" itemValue="#{entry.key}" itemLabel="#{entry.key}"/>
+                                        </h:selectOneMenu>
+                                    </td>
+                                </tr>
+
+                            </table>
+                            <hr/>
+                        </td>
+                    </tr>
+
+                </table>
+                    <h:commandButton id="createGraphButton" value="Ок" onclick="document.getElementById('tableForm:loading_wrapper').style.display='block'">
+                        <f:ajax listener="#{formBean.setShowBlock('2')}" action="click" execute=":tableForm" render=":tableForm"/>
+                        <f:ajax listener="#{formBean.setShowSubBlock('1')}" action="click" execute=":tableForm" render=":tableForm"/>
+                        <f:ajax listener="#{formBean.saveEmpiricGraph}" action="click" execute=":tableForm" render=":tableForm" />
+                    </h:commandButton>
+
+                    <h:commandButton id="showAnalystParamsButton" value="Отмена" >
+                        <f:ajax listener="#{formBean.setShowBlock('2')}" action="click" execute=":tableForm" render=":tableForm"/>
+                    </h:commandButton>
+
+                    <h:panelGroup class="buttonLoadingImage" id="loading_wrapper" layout="block" style="display:none">
+                        <h:graphicImage library="img" name="preloader.gif" width="80"/>
+                    </h:panelGroup>
+
+                </h:panelGroup>
+
+            </h:form>
+
+
+        </ui:define>
+
+    </ui:composition>
+
+
+</h:body>
+</html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>#{messages.welcome_title}</title>
+    <h:outputStylesheet name="/css/loginStyles.css"/>
+    <h:outputScript library="js" name="lib.js" target="head"/>
+</h:head>
+
+<h:body>
+    <noscript>
+        <h4>Включите Javscript в браузере для полноценной работы системы</h4>
+    </noscript>
+
+    <div id="login-form">
+        <h1>#{messages.registration}</h1>
+
+        <fieldset>
+            <h:form action="" method="get" id="registration_form">
+
+                <h:outputLabel value='#{messages.input_login}:'/>
+                <h:inputText id="email" value="#{user.email}" type="email" required="true" >
+                    <f:validator validatorId="ru.hydrologist.validators.LoginValidator"/>
+                    <f:validator validatorId="ru.hydrologist.validators.RegistrationValidator"/>
+                </h:inputText>
+
+                <h:outputLabel value='#{messages.input_password}:'/>
+                <h:inputSecret id="inputPassword" value="#{user.password}" type="password">
+                    <f:validator validatorId="ru.hydrologist.validators.PasswordValidator"/>
+                </h:inputSecret>
+
+                <h:outputLabel value='#{messages.input_confirm_password}:'/>
+                <h:inputSecret id="inputConfirmPassword" value="#{user.confirmingPassword}" type="password" >
+                    <f:validator validatorId="ru.hydrologist.validators.PasswordValidator"/>
+                </h:inputSecret>
+
+                <div>
+                    <div>
+                            <h:commandButton id="registerButton" action="#{user.register()}" value="#{messages.input_registration}">
+                                <f:ajax event="mousedown" onevent="showProgress"/>
+                            </h:commandButton>
+                    </div>
+                    <div id="cancel">
+                            <h:link value="#{messages.input_cancel}" outcome="login" />
+                    </div>
+                </div>
+
+                <div class = "error">
+                    <h:message for="email" styleClass="error"/>
+                    <h:message for="inputPassword" styleClass="error"/>
+                    <h:message for="inputConfirmPassword" styleClass="error"/>
+                </div>
+
+                <div id="loading_wrapper">
+                    <h:graphicImage library="img" name="preloader.gif" width="80"/>
+                </div>
+
+            </h:form>
+        </fieldset>
+
+    </div>
+</h:body>
+
+</html>
